@@ -61,6 +61,7 @@ void MyRobot::readyRead() {
 void MyRobot::MyTimerSlot() {
     qDebug() << "Timer...";
     while(Mutex.tryLock());
+    crctosend(); // Calculer et ajouter le CRC
     socket->write(DataToSend);
     Mutex.unlock();
 }
