@@ -12,6 +12,8 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include <QTimer>
+#include <QMainWindow>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,8 +26,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    MyRobot wifibot;
 
+    MyRobot wifibot;
 private slots:
 
     void on_Bouton_avancer_clicked();

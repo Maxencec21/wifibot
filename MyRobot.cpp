@@ -22,6 +22,7 @@ void MyRobot::doConnect() {
     socket = new QTcpSocket(this); // socket creation
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
     connect(socket, SIGNAL(disconnected()),this, SLOT(disconnected()));
+<<<<<<< HEAD
     //connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     qDebug() << "connecting..."; // this is not blocking call
@@ -60,10 +61,70 @@ void MyRobot::readyRead() {
 void MyRobot::MyTimerSlot() {
     qDebug() << "Timer...";
     while(Mutex.tryLock());
+    crctosend(); // Calculer et ajouter le CRC
     socket->write(DataToSend);
     Mutex.unlock();
 }
 
+short MyRobot::Crc16(char *Adresse_tab , unsigned char Taille_max)
+{
+    unsigned int Crc = 0xFFFF;
+    unsigned int Polynome = 0xA001;
+    unsigned int CptOctet = 0;
+    unsigned int CptBit = 0;
+    unsigned int Parity= 0;
+    Crc = 0xFFFF;
+    Polynome = 0xA001;
+    for ( CptOctet= 0 ; CptOctet < Taille_max ; CptOctet++)
+    {
+        Crc ^= *( Adresse_tab + CptOctet);
+        for ( CptBit = 0; CptBit <= 7 ; CptBit++)
+        {
+            Parity= Crc;
+            Crc >>= 1;
+            if (Parity%2 == true) Crc ^= Polynome;
+        }
+    }
+
+    return(Crc);
+}
+
+void MyRobot::crctosend()
+{
+    // Calculer le CRC à partir des données actuelles dans DataToSend
+    short crc = Crc16(DataToSend.data(), DataToSend.size());
+
+    // Ajouter le CRC aux octets 7 et 8 de DataToSend
+    DataToSend[7] = crc & 0xFF;           // Octet 7
+    DataToSend[8] = (crc >> 8) & 0xFF;    // Octet 8
+}
+
+void MyRobot::keyPressed(QKeyEvent *event)
+{
+    // Récupérez la touche enfoncée
+    int key = event->key();
+
+    // Vérifiez quelle touche a été enfoncée et envoyez la commande correspondante
+    switch (key) {
+    case Qt::Key_Up:
+        // Commande pour avancer
+        avancer();
+        break;
+    case Qt::Key_Down:
+        // Commande pour reculer
+        reculer();
+        break;
+    case Qt::Key_Left:
+        // Commande pour tourner à gauche
+        allerDroite();
+        break;
+    case Qt::Key_Right:
+        // Commande pour tourner à droite
+        allerGauche();
+        break;
+        // Ajoutez d'autres cases pour gérer d'autres touches du clavier selon vos besoins
+    }
+}
 //Focntion faisant avancer le robot
 void MyRobot::avancer(){
     DataToSend[2] = 100;
@@ -71,8 +132,8 @@ void MyRobot::avancer(){
     DataToSend[4] = 100;
     DataToSend[5] = 100 >> 8;
     DataToSend[6] = 80;
-    //crctosend();
 
+    crctosend();
 }
 
 //Focntion faisant reculer le robot
@@ -82,8 +143,8 @@ void MyRobot::reculer(){
     DataToSend[4] = 100;
     DataToSend[5] = 100 >> 8;
     DataToSend[6] = 0;
-    // crctosend();
 
+    crctosend();
 }
 
 //Focntion faisant aller le robot à droite
@@ -93,7 +154,7 @@ void MyRobot::allerDroite(){
     DataToSend[4] = 150;
     DataToSend[5] = 150 >> 8;
     DataToSend[6] = 64;
-    // crctosend();
+    crctosend();
 }
 
 //Focntion faisant aller le robot à gauche
@@ -103,7 +164,8 @@ void MyRobot::allerGauche(){
     DataToSend[4] = 150;
     DataToSend[5] = 150 >> 8;
     DataToSend[6] = 16;
-    //crctosend();
+
+    crctosend();
 }
 
 //Focntion faisant s'arrêter le robot
@@ -113,12 +175,14 @@ void MyRobot::stop(){
     DataToSend[4] = 0x00;
     DataToSend[5] = 0x00;
     DataToSend[6] = 80;
-    //crctosend();
+    crctosend();
 }
-QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
+void MyRobot::cameraStream(QString ip, QString port){
+
     QUrl url = QUrl("http://" + ip + ":" + port + "/?action=stream");
     qDebug() << url;
     QWebEngineView *view = new QWebEngineView();
     view->load(url);
     return view;
+
 }

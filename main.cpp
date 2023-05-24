@@ -19,7 +19,5 @@ int main(int argc, char *argv[])
     //wifiBot.disConnect();
 
     w.show();
-
-
     return a.exec();
 }

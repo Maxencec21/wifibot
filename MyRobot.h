@@ -23,6 +23,7 @@ public:
     void doConnect();
     void disConnect();
     QWebEngineView* cameraStream(QString ip, QString port);
+
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
@@ -37,13 +38,16 @@ public slots:
     void disconnected();
     void readyRead();
     void MyTimerSlot();
-    //void bytesWritten();
+    short Crc16(char *Adresse_tab , unsigned char Taille_max);
+    void crctosend();
 
     void avancer();
     void reculer();
     void allerDroite();
     void allerGauche();
     void stop();
+
+    void keyPressed(QKeyEvent *event);
 
 
 
