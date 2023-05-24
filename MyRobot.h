@@ -22,8 +22,7 @@ public:
     explicit MyRobot(QObject *parent = 0);
     void doConnect();
     void disConnect();
-    void cameraStream(QString ip, QString port);
-
+    QWebEngineView* cameraStream(QString ip, QString port);
     QByteArray DataToSend;
     QByteArray DataReceived;
     QMutex Mutex;
@@ -38,8 +37,7 @@ public slots:
     void disconnected();
     void readyRead();
     void MyTimerSlot();
-    short Crc16(char *Adresse_tab , unsigned char Taille_max);
-    void crctosend();
+    //void bytesWritten();
 
     void avancer();
     void reculer();
@@ -47,15 +45,12 @@ public slots:
     void allerGauche();
     void stop();
 
-    void keyPressed(QKeyEvent *event);
-
 
 
 private:
 
     QTcpSocket *socket;
     QTimer *TimerEnvoi;
-
 
 };
 #endif // MYROBOT_H

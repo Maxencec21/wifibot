@@ -9,14 +9,16 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MyRobot wifiBot;
     MainWindow w;
-    wifiBot.doConnect();
+
+
+    //wifibot.doConnect();
     //wifiBot.cameraStream("192.168.1.106", "8080");
-    wifiBot.MyTimerSlot();
-    w.show();
+    //wifibot.MyTimerSlot();
     //wifiBot.avancer();
     //wifiBot.disConnect();
+
+    w.show();
 
 
     return a.exec();
