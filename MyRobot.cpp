@@ -8,7 +8,7 @@ MyRobot::MyRobot(QObject *parent) : QObject(parent) {
     DataToSend[3] = 0x00;
     DataToSend[4] = 0x00;//120 sur la droite
     DataToSend[5] = 0x00;
-    DataToSend[6] = 0b11110000;
+    DataToSend[6] = 0;
     DataToSend[7] = 0x0;
     DataToSend[8] = 0x0;
     DataReceived.resize(21);
@@ -22,6 +22,7 @@ void MyRobot::doConnect() {
     socket = new QTcpSocket(this); // socket creation
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
     connect(socket, SIGNAL(disconnected()),this, SLOT(disconnected()));
+
     //connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     qDebug() << "connecting..."; // this is not blocking call
@@ -65,7 +66,7 @@ void MyRobot::MyTimerSlot() {
     Mutex.unlock();
 }
 
-short MyRobot::Crc16(char *Adresse_tab , unsigned char Taille_max)
+short MyRobot::Crc16(unsigned char *Adresse_tab , unsigned char Taille_max)
 {
     unsigned int Crc = 0xFFFF;
     unsigned int Polynome = 0xA001;
@@ -74,7 +75,7 @@ short MyRobot::Crc16(char *Adresse_tab , unsigned char Taille_max)
     unsigned int Parity= 0;
     Crc = 0xFFFF;
     Polynome = 0xA001;
-    for ( CptOctet= 0 ; CptOctet < Taille_max ; CptOctet++)
+    for ( CptOctet= 0 ; CptOctet <= Taille_max ; CptOctet++)
     {
         Crc ^= *( Adresse_tab + CptOctet);
         for ( CptBit = 0; CptBit <= 7 ; CptBit++)
@@ -91,11 +92,14 @@ short MyRobot::Crc16(char *Adresse_tab , unsigned char Taille_max)
 void MyRobot::crctosend()
 {
     // Calculer le CRC à partir des données actuelles dans DataToSend
-    short crc = Crc16(DataToSend.data(), DataToSend.size());
+    unsigned char *dat=(unsigned char *)DataToSend.data();
+    short crc = Crc16(dat+1,6);
 
     // Ajouter le CRC aux octets 7 et 8 de DataToSend
     DataToSend[7] = crc & 0xFF;           // Octet 7
     DataToSend[8] = (crc >> 8) & 0xFF;    // Octet 8
+    DataReceived.resize(21);
+
 }
 
 void MyRobot::keyPressed(QKeyEvent *event)
@@ -108,6 +112,7 @@ void MyRobot::keyPressed(QKeyEvent *event)
     case Qt::Key_Up:
         // Commande pour avancer
         avancer();
+        qDebug() << "avancer";
         break;
     case Qt::Key_Down:
         // Commande pour reculer
@@ -127,10 +132,11 @@ void MyRobot::keyPressed(QKeyEvent *event)
 //Focntion faisant avancer le robot
 void MyRobot::avancer(){
     DataToSend[2] = 100;
-    DataToSend[3] = 100 >> 8;
+    DataToSend[3] = 0;
     DataToSend[4] = 100;
-    DataToSend[5] = 100 >> 8;
+    DataToSend[5] = 0;
     DataToSend[6] = 80;
+    qDebug() << "avancer ";
 
     crctosend();
 }
@@ -138,10 +144,12 @@ void MyRobot::avancer(){
 //Focntion faisant reculer le robot
 void MyRobot::reculer(){
     DataToSend[2] = 100;
-    DataToSend[3] = 100 >> 8;
+    DataToSend[3] = 0;
     DataToSend[4] = 100;
-    DataToSend[5] = 100 >> 8;
+    DataToSend[5] = 0;
     DataToSend[6] = 0;
+    qDebug() << "reculer ";
+
 
     crctosend();
 }
@@ -149,20 +157,24 @@ void MyRobot::reculer(){
 //Focntion faisant aller le robot à droite
 void MyRobot::allerDroite(){
     DataToSend[2] = 150;
-    DataToSend[3] = 150 >> 8;
+    DataToSend[3] = 0;
     DataToSend[4] = 150;
-    DataToSend[5] = 150 >> 8;
+    DataToSend[5] = 0;
     DataToSend[6] = 64;
     crctosend();
+    qDebug() << "droite ";
+
 }
 
 //Focntion faisant aller le robot à gauche
 void MyRobot::allerGauche(){
     DataToSend[2] = 150;
-    DataToSend[3] = 150 >> 8;
+    DataToSend[3] = 0;
     DataToSend[4] = 150;
-    DataToSend[5] = 150 >> 8;
+    DataToSend[5] = 0;
     DataToSend[6] = 16;
+    qDebug() << "gauche ";
+
 
     crctosend();
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>828</width>
+    <height>501</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,63 +18,63 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>140</y>
+      <y>90</y>
       <width>431</width>
       <height>291</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout"/>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="boutton_avancer">
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>140</y>
+      <y>100</y>
       <width>80</width>
       <height>18</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Avancer</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="boutton_gauche_2">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>170</y>
+      <y>130</y>
       <width>80</width>
       <height>18</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Gauche</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="boutton_reculer">
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>200</y>
+      <y>160</y>
       <width>80</width>
       <height>18</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Reculer</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="boutton_droite">
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>170</y>
+      <y>130</y>
       <width>80</width>
       <height>18</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Droite</string>
     </property>
    </widget>
   </widget>
@@ -83,7 +83,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>828</width>
      <height>17</height>
     </rect>
    </property>

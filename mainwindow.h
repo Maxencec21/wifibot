@@ -38,8 +38,8 @@ private slots:
 
     void on_boutton_gauche_2_clicked();
 
+
 private:
     Ui::MainWindow *ui;
-    MyRobot wifiBot;
 };
 #endif // MAINWINDOW_H
