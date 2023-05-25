@@ -30,9 +30,6 @@ public:
     MyRobot wifibot;
 private slots:
 
-    void on_Bouton_avancer_clicked();
-
-    void on_Bouton_reculer_clicked();
 
 private:
     Ui::MainWindow *ui;

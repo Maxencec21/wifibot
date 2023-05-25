@@ -17,15 +17,3 @@ MainWindow::~MainWindow()
 
 
 
-
-void MainWindow::on_Bouton_avancer_clicked()
-{
-    wifibot.avancer();
-}
-
-
-void MainWindow::on_Bouton_reculer_clicked()
-{
-    wifibot.reculer();
-}
-
