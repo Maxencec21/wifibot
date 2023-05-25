@@ -22,7 +22,6 @@ void MyRobot::doConnect() {
     socket = new QTcpSocket(this); // socket creation
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
     connect(socket, SIGNAL(disconnected()),this, SLOT(disconnected()));
-<<<<<<< HEAD
     //connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     qDebug() << "connecting..."; // this is not blocking call
@@ -177,7 +176,7 @@ void MyRobot::stop(){
     DataToSend[6] = 80;
     crctosend();
 }
-void MyRobot::cameraStream(QString ip, QString port){
+QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
 
     QUrl url = QUrl("http://" + ip + ":" + port + "/?action=stream");
     qDebug() << url;
