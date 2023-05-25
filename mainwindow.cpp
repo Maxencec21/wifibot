@@ -17,15 +17,26 @@ MainWindow::~MainWindow()
 
 
 
-
-void MainWindow::on_Bouton_avancer_clicked()
+void MainWindow::on_boutton_avancer_clicked()
 {
-    wifibot.avancer();
+
 }
 
 
-void MainWindow::on_Bouton_reculer_clicked()
+void MainWindow::on_boutton_droite_clicked()
 {
-    wifibot.reculer();
+
+}
+
+
+void MainWindow::on_boutton_reculer_clicked()
+{
+
+}
+
+
+void MainWindow::on_boutton_gauche_2_clicked()
+{
+
 }
 
