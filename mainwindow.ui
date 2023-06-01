@@ -6,21 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>828</width>
+    <height>501</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="Bouton_avancer">
+   <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <x>70</x>
+      <x>210</x>
       <y>90</y>
+      <width>431</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout"/>
+   </widget>
+   <widget class="QPushButton" name="boutton_avancer">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>100</y>
       <width>80</width>
       <height>18</height>
      </rect>
@@ -29,13 +38,24 @@
      <string>Avancer</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Bouton_reculer">
+   <widget class="QPushButton" name="boutton_gauche_2">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>50</y>
+      <y>130</y>
+      <width>80</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Gauche</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="boutton_reculer">
+    <property name="geometry">
+     <rect>
       <x>70</x>
-      <y>120</y>
+      <y>160</y>
       <width>80</width>
       <height>18</height>
      </rect>
@@ -44,16 +64,18 @@
      <string>Reculer</string>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QPushButton" name="boutton_droite">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>100</y>
-      <width>521</width>
-      <height>351</height>
+      <x>120</x>
+      <y>130</y>
+      <width>80</width>
+      <height>18</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout"/>
+    <property name="text">
+     <string>Droite</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -61,8 +83,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>17</height>
+     <width>828</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
