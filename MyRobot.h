@@ -46,8 +46,9 @@ public slots:
     void allerDroite();
     void allerGauche();
     void stop();
+    float Batterie();
 
-    void keyPressed(QKeyEvent *event);
+
 
 
 

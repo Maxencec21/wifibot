@@ -38,6 +38,8 @@ public slots:
 
     void on_boutton_gauche_2_clicked();
 
+    void keyPressed(QKeyEvent *event);
+
 
 private:
     Ui::MainWindow *ui;

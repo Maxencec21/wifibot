@@ -28,7 +28,7 @@ void MyRobot::doConnect() {
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     qDebug() << "connecting..."; // this is not blocking call
    // socket->connectToHost("192.168.1.106", 15020);
-    socket->connectToHost("192.168.10.1", 5003); // connection to wifibot 192.168.1.106:1520 192.168.10.1:5000
+    socket->connectToHost("192.168.10.1", 5013); // connection to wifibot 192.168.1.106:1520 192.168.10.1:5000
     // we need to wait...
     if(!socket->waitForConnected(5000)) {
         qDebug() << "Error: " << socket->errorString();
@@ -102,32 +102,7 @@ void MyRobot::crctosend()
     DataReceived.resize(21);
 }
 
-void MyRobot::keyPressed(QKeyEvent *event)
-{
-    // Récupérez la touche enfoncée
-    int key = event->key();
 
-    // Vérifiez quelle touche a été enfoncée et envoyez la commande correspondante
-    switch (key) {
-    case Qt::Key_Up:
-        // Commande pour avancer
-        avancer();
-        break;
-    case Qt::Key_Down:
-        // Commande pour reculer
-        reculer();
-        break;
-    case Qt::Key_Left:
-        // Commande pour tourner à gauche
-        allerGauche();
-        break;
-    case Qt::Key_Right:
-        // Commande pour tourner à droite
-        allerDroite();
-        break;
-        // Ajoutez d'autres cases pour gérer d'autres touches du clavier selon vos besoins
-    }
-}
 //Focntion faisant avancer le robot
 void MyRobot::avancer(){
     DataToSend[2] = 100;
@@ -180,6 +155,12 @@ void MyRobot::stop(){
     DataToSend[6] = 80;
     crctosend();
 }
+
+float MyRobot::Batterie(){
+    unsigned char data = (DataReceived[2] >> 2);
+    float batterie = float(data);
+    return batterie;
+}
 QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
 
     QUrl url = QUrl("http://" + ip + ":" + port + "/?action=stream");
@@ -189,3 +170,5 @@ QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
     return view;
 
 }
+
+
