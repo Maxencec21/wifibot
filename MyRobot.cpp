@@ -28,6 +28,7 @@ void MyRobot::doConnect() {
     qDebug() << "connecting..."; // this is not blocking call
     //socket->connectToHost("LOCALHOST", 15020);
     socket->connectToHost("192.168.1.106", 15020); // connection to wifibot
+    socket->connectToHost("192.168.1.106", 15020); // connection to wifibot
     // we need to wait...
     if(!socket->waitForConnected(5000)) {
         qDebug() << "Error: " << socket->errorString();
@@ -61,7 +62,6 @@ void MyRobot::readyRead() {
 void MyRobot::MyTimerSlot() {
     qDebug() << "Timer...";
     while(Mutex.tryLock());
-    crctosend(); // Calculer et ajouter le CRC
     socket->write(DataToSend);
     Mutex.unlock();
 }
@@ -139,6 +139,8 @@ void MyRobot::avancer(){
     qDebug() << "avancer ";
 
     crctosend();
+    //crctosend();
+
 }
 
 //Focntion faisant reculer le robot
@@ -148,10 +150,8 @@ void MyRobot::reculer(){
     DataToSend[4] = 100;
     DataToSend[5] = 0;
     DataToSend[6] = 0;
-    qDebug() << "reculer ";
+    // crctosend();
 
-
-    crctosend();
 }
 
 //Focntion faisant aller le robot à droite
@@ -161,9 +161,7 @@ void MyRobot::allerDroite(){
     DataToSend[4] = 150;
     DataToSend[5] = 0;
     DataToSend[6] = 64;
-    crctosend();
-    qDebug() << "droite ";
-
+    // crctosend();
 }
 
 //Focntion faisant aller le robot à gauche
@@ -173,10 +171,7 @@ void MyRobot::allerGauche(){
     DataToSend[4] = 150;
     DataToSend[5] = 0;
     DataToSend[6] = 16;
-    qDebug() << "gauche ";
-
-
-    crctosend();
+    //crctosend();
 }
 
 //Focntion faisant s'arrêter le robot
@@ -186,7 +181,7 @@ void MyRobot::stop(){
     DataToSend[4] = 0x00;
     DataToSend[5] = 0x00;
     DataToSend[6] = 80;
-    crctosend();
+    //crctosend();
 }
 QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
 
@@ -195,5 +190,4 @@ QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
     QWebEngineView *view = new QWebEngineView();
     view->load(url);
     return view;
-
 }

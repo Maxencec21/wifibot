@@ -47,8 +47,6 @@ public slots:
     void allerGauche();
     void stop();
 
-    void keyPressed(QKeyEvent *event);
-
 
 
 private:
