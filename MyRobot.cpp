@@ -23,7 +23,7 @@ void MyRobot::doConnect() {
     connect(socket, SIGNAL(connected()),this, SLOT(connected()));
     connect(socket, SIGNAL(disconnected()),this, SLOT(disconnected()));
 
-    //connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
+    connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
     connect(socket, SIGNAL(readyRead()),this, SLOT(readyRead()));
     qDebug() << "connecting..."; // this is not blocking call
     //socket->connectToHost("LOCALHOST", 15020);
@@ -56,6 +56,8 @@ void MyRobot::readyRead() {
     DataReceived = socket->readAll();
     emit updateUI(DataReceived);
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
+    int niveauBatterie = static_cast<int>(DataReceived[2]);
+    emit batteryUpdate(niveauBatterie);
 }
 
 void MyRobot::MyTimerSlot() {
@@ -65,7 +67,7 @@ void MyRobot::MyTimerSlot() {
     Mutex.unlock();
 }
 
-short MyRobot::Crc16(unsigned char *Adresse_tab , unsigned char Taille_max)
+short MyRobot::Crc16(QByteArray Adresse_tab , unsigned char Taille_max)
 {
     unsigned int Crc = 0xFFFF;
     unsigned int Polynome = 0xA001;
@@ -74,14 +76,17 @@ short MyRobot::Crc16(unsigned char *Adresse_tab , unsigned char Taille_max)
     unsigned int Parity= 0;
     Crc = 0xFFFF;
     Polynome = 0xA001;
-    for ( CptOctet= 0 ; CptOctet <= Taille_max ; CptOctet++)
+    for ( CptOctet= 1 ; CptOctet < Taille_max ; CptOctet++)
     {
-        Crc ^= *( Adresse_tab + CptOctet);
+        Crc ^= (unsigned char)(Adresse_tab[CptOctet]);
         for ( CptBit = 0; CptBit <= 7 ; CptBit++)
         {
             Parity= Crc;
             Crc >>= 1;
-            if (Parity%2 == true) Crc ^= Polynome;
+            if (Parity%2 == true)
+            {
+                Crc ^= Polynome;
+            }
         }
     }
 
@@ -91,12 +96,11 @@ short MyRobot::Crc16(unsigned char *Adresse_tab , unsigned char Taille_max)
 void MyRobot::crctosend()
 {
     // Calculer le CRC à partir des données actuelles dans DataToSend
-    unsigned char *dat=(unsigned char *)DataToSend.data();
-    short crc = Crc16(dat+1,6);
+    short crc = Crc16(DataToSend,7);
 
     // Ajouter le CRC aux octets 7 et 8 de DataToSend
-    DataToSend[7] = crc & 0xFF;           // Octet 7
-    DataToSend[8] = (crc >> 8) & 0xFF;    // Octet 8
+    DataToSend[7] = crc;           // Octet 7
+    DataToSend[8] = crc >> 8;    // Octet 8
     DataReceived.resize(21);
 
 }
@@ -109,9 +113,10 @@ void MyRobot::avancer(){
     DataToSend[4] = 100;
     DataToSend[5] = 0;
     DataToSend[6] = 80;
-
     crctosend();
-
+    QDebug debug = qDebug();
+    for(int i = 0; i < DataToSend.size(); i++)
+        debug << static_cast<unsigned char>(DataToSend[i]) << " ";
 }
 
 //Focntion faisant reculer le robot
@@ -167,3 +172,8 @@ QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
     view->load(url);
     return view;
 }
+
+void MyRobot::bytesWritten(qint64 bytes){
+    qDebug() << bytes << "bytes written";
+}
+

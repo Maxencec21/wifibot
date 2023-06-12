@@ -31,6 +31,7 @@ public:
 signals:
 
     void updateUI(const QByteArray Data);
+    void batteryUpdate(int batteryLevel);
 
 public slots:
 
@@ -38,7 +39,7 @@ public slots:
     void disconnected();
     void readyRead();
     void MyTimerSlot();
-    short Crc16(unsigned char *Adresse_tab , unsigned char Taille_max);
+    short Crc16(QByteArray Adresse_tab , unsigned char Taille_max);
     void crctosend();
 
     void avancer();
@@ -48,9 +49,7 @@ public slots:
     void stop();
 
     float Batterie();
-    void keyPressed(QKeyEvent *event);
-
-
+    void bytesWritten(qint64 bytes);
 
 private:
 

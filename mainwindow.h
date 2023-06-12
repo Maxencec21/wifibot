@@ -38,19 +38,24 @@ public slots:
 
 private slots:
 
-    void on_boutton_avancer_clicked();
+    void on_boutton_avancer_pressed();
 
-    void on_boutton_droite_clicked();
+    void on_boutton_droite_pressed();
 
-    void on_boutton_reculer_clicked();
+    void on_boutton_reculer_pressed();
 
-    void on_boutton_gauche_2_clicked();
+    void on_boutton_gauche_2_pressed();
+    void keyPressEvent(QKeyEvent *event);
 
-    void keyPressed(QKeyEvent *event);
+    void on_progressBar_valueChanged(int NiveauBatterie);
 
+    void on_boutton_avancer_released();
 
+    void on_boutton_droite_released();
 
-    void on_progressBar_valueChanged(int value);
+    void on_boutton_reculer_released();
+
+    void on_boutton_gauche_2_released();
 
 private:
     Ui::MainWindow *ui;

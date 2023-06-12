@@ -8,11 +8,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->gridLayout->addWidget(wifibot.cameraStream("192.168.1.106", "8080"));
+    connect(&wifibot, SIGNAL(batteryUpdate(int)), this, SLOT(on_progressBar_valueChanged(int)));
     wifibot.doConnect();
     wifibot.MyTimerSlot();
 
-    connect(&wifibot, SIGNAL(readyRead(const QByteArray)), this, SLOT(updateUi(const QByteArray)));
+    //connect(&wifibot, SIGNAL(readyRead(const QByteArray)), this, SLOT(updateUi(const QByteArray)));
 }
+
 
 
 void MainWindow::updateUi(const QByteArray array)
@@ -27,62 +29,83 @@ MainWindow::~MainWindow()
 
 
 
-void MainWindow::on_boutton_avancer_clicked()
+void MainWindow::on_boutton_avancer_pressed()
 {
     wifibot.avancer();
 }
 
 
-void MainWindow::on_boutton_droite_clicked()
+void MainWindow::on_boutton_droite_pressed()
 {
     wifibot.allerDroite();
 }
 
 
-void MainWindow::on_boutton_reculer_clicked()
+void MainWindow::on_boutton_reculer_pressed()
 {
     wifibot.reculer();
 }
 
 
-void MainWindow::on_boutton_gauche_2_clicked()
+void MainWindow::on_boutton_gauche_2_pressed()
 {
     wifibot.allerGauche();
 }
 
 
 
-void MainWindow::on_progressBar_valueChanged(int value)
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    int batlvl = int(wifibot.Batterie());
-    ui->progressBar->setValue(batlvl);
-}
-
-void MyRobot::keyPressed(QKeyEvent *event)
-{
-    // Récupérez la touche enfoncée
-    int key = event->key();
 
     // Vérifiez quelle touche a été enfoncée et envoyez la commande correspondante
-    switch (key) {
-    case Qt::Key_Up:
+    if(event->key() == Qt::Key_Z) {
         // Commande pour avancer
-        avancer();
+        wifibot.avancer();
         qDebug() << "avancer";
-        break;
-    case Qt::Key_Down:
-        // Commande pour reculer
-        reculer();
-        break;
-    case Qt::Key_Left:
-        // Commande pour tourner à gauche
-        allerDroite();
-        break;
-    case Qt::Key_Right:
-        // Commande pour tourner à droite
-        allerGauche();
-        break;
-        // Ajoutez d'autres cases pour gérer d'autres touches du clavier selon vos besoins
     }
+    else if (event->key() == Qt::Key_S)
+        wifibot.reculer();
+
+    else if (event->key() == Qt::Key_Q)
+        wifibot.allerGauche();
+
+    else if (event->key() == Qt::Key_D)
+        wifibot.allerDroite();
+
+    else
+        wifibot.stop();
+
+}
+
+
+void MainWindow::on_boutton_avancer_released()
+{
+    wifibot.stop();
+}
+
+
+void MainWindow::on_boutton_droite_released()
+{
+    wifibot.stop();
+}
+
+
+void MainWindow::on_boutton_reculer_released()
+{
+    wifibot.stop();
+}
+
+
+void MainWindow::on_boutton_gauche_2_released()
+{
+    wifibot.stop();
+}
+
+void MainWindow::on_progressBar_valueChanged(int niveauBatterie){
+    if(niveauBatterie < 0){
+        niveauBatterie += 255;
+    }
+    qDebug() << "Niveau de batterie : " << niveauBatterie;
+    ui->progressBar->setValue(niveauBatterie);
 }
 
