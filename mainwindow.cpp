@@ -9,8 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->gridLayout->addWidget(wifibot.cameraStream("192.168.1.106", "8080"));
     connect(&wifibot, SIGNAL(batteryUpdate(int)), this, SLOT(on_progressBar_valueChanged(int)));
-    wifibot.doConnect();
-    wifibot.MyTimerSlot();
 
     //connect(&wifibot, SIGNAL(readyRead(const QByteArray)), this, SLOT(updateUi(const QByteArray)));
 }
@@ -107,5 +105,19 @@ void MainWindow::on_progressBar_valueChanged(int niveauBatterie){
     }
     qDebug() << "Niveau de batterie : " << niveauBatterie;
     ui->progressBar->setValue(niveauBatterie);
+}
+
+
+void MainWindow::on_boutton_connection_clicked()
+{
+    wifibot.doConnect();
+    wifibot.MyTimerSlot();
+}
+
+
+void MainWindow::on_boutton_dconnection_clicked()
+{
+    wifibot.disConnect();
+    wifibot.disconnected();
 }
 

@@ -57,6 +57,10 @@ private slots:
 
     void on_boutton_gauche_2_released();
 
+    void on_boutton_connection_clicked();
+
+    void on_boutton_dconnection_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
