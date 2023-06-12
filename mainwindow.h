@@ -61,6 +61,10 @@ private slots:
 
     void on_boutton_dconnection_clicked();
 
+    void on_lcdNumber_overflow(float odometrieD);
+
+    void on_lcdNumber_2_overflow(float odometrieG);
+
 private:
     Ui::MainWindow *ui;
 };

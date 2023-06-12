@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->gridLayout->addWidget(wifibot.cameraStream("192.168.1.106", "8080"));
     connect(&wifibot, SIGNAL(batteryUpdate(int)), this, SLOT(on_progressBar_valueChanged(int)));
+    connect(&wifibot, SIGNAL(odoDUpdate(float)), this, SLOT(on_lcdNumber_overflow(float)));
+    connect(&wifibot, SIGNAL(odoGUpdate(float)), this, SLOT(on_lcdNumber_2_overflow(float)));
+
 
     //connect(&wifibot, SIGNAL(readyRead(const QByteArray)), this, SLOT(updateUi(const QByteArray)));
 }
@@ -30,6 +33,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_boutton_avancer_pressed()
 {
     wifibot.avancer();
+
 }
 
 
@@ -103,7 +107,6 @@ void MainWindow::on_progressBar_valueChanged(int niveauBatterie){
     if(niveauBatterie < 0){
         niveauBatterie += 255;
     }
-    qDebug() << "Niveau de batterie : " << niveauBatterie;
     ui->progressBar->setValue(niveauBatterie);
 }
 
@@ -119,5 +122,19 @@ void MainWindow::on_boutton_dconnection_clicked()
 {
     wifibot.disConnect();
     wifibot.disconnected();
+}
+
+
+void MainWindow::on_lcdNumber_overflow(float odometrieD)
+{
+    ui->lcdNumber->display(odometrieD);
+}
+
+
+
+
+void MainWindow::on_lcdNumber_2_overflow(float odometrieG)
+{
+    ui->lcdNumber_2->display(odometrieG);
 }
 

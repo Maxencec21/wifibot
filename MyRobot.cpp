@@ -57,7 +57,15 @@ void MyRobot::readyRead() {
     emit updateUI(DataReceived);
     qDebug() << DataReceived[0] << DataReceived[1] << DataReceived[2];
     int niveauBatterie = static_cast<int>(DataReceived[2]);
+
+    float odometrieD = ((((long)DataReceived[16] << 24))+(((long)DataReceived[15] << 16))+(((long)DataReceived[14] << 8))+((long)DataReceived[13]));
+
+    float odometrieG = ((((long)DataReceived[8] << 24))+(((long)DataReceived[7] << 16))+(((long)DataReceived[6] << 8))+((long)DataReceived[5]));
+
     emit batteryUpdate(niveauBatterie);
+    emit odoDUpdate(odometrieD);
+    emit odoGUpdate(odometrieG);
+
 }
 
 void MyRobot::MyTimerSlot() {
@@ -114,9 +122,6 @@ void MyRobot::avancer(){
     DataToSend[5] = 0;
     DataToSend[6] = 80;
     crctosend();
-    QDebug debug = qDebug();
-    for(int i = 0; i < DataToSend.size(); i++)
-        debug << static_cast<unsigned char>(DataToSend[i]) << " ";
 }
 
 //Focntion faisant reculer le robot
@@ -176,4 +181,5 @@ QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
 void MyRobot::bytesWritten(qint64 bytes){
     qDebug() << bytes << "bytes written";
 }
+
 

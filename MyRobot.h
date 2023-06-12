@@ -32,6 +32,9 @@ signals:
 
     void updateUI(const QByteArray Data);
     void batteryUpdate(int batteryLevel);
+    void odoDUpdate(float odometrieD);
+    void odoGUpdate(float odometrieG);
+
 
 public slots:
 
@@ -50,6 +53,7 @@ public slots:
 
     float Batterie();
     void bytesWritten(qint64 bytes);
+
 
 private:
 
