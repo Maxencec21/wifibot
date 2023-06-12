@@ -32,7 +32,10 @@ public:
     ~MainWindow();
     MyRobot wifibot;
 
-    MyRobot wifibot;
+
+public slots:
+    void updateUi(const QByteArray);
+
 private slots:
 
     void on_boutton_avancer_clicked();
@@ -43,6 +46,11 @@ private slots:
 
     void on_boutton_gauche_2_clicked();
 
+    void keyPressed(QKeyEvent *event);
+
+
+
+    void on_progressBar_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

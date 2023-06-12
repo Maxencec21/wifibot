@@ -28,7 +28,6 @@ void MyRobot::doConnect() {
     qDebug() << "connecting..."; // this is not blocking call
     //socket->connectToHost("LOCALHOST", 15020);
     socket->connectToHost("192.168.1.106", 15020); // connection to wifibot
-    socket->connectToHost("192.168.1.106", 15020); // connection to wifibot
     // we need to wait...
     if(!socket->waitForConnected(5000)) {
         qDebug() << "Error: " << socket->errorString();
@@ -102,33 +101,7 @@ void MyRobot::crctosend()
 
 }
 
-void MyRobot::keyPressed(QKeyEvent *event)
-{
-    // Récupérez la touche enfoncée
-    int key = event->key();
 
-    // Vérifiez quelle touche a été enfoncée et envoyez la commande correspondante
-    switch (key) {
-    case Qt::Key_Up:
-        // Commande pour avancer
-        avancer();
-        qDebug() << "avancer";
-        break;
-    case Qt::Key_Down:
-        // Commande pour reculer
-        reculer();
-        break;
-    case Qt::Key_Left:
-        // Commande pour tourner à gauche
-        allerDroite();
-        break;
-    case Qt::Key_Right:
-        // Commande pour tourner à droite
-        allerGauche();
-        break;
-        // Ajoutez d'autres cases pour gérer d'autres touches du clavier selon vos besoins
-    }
-}
 //Focntion faisant avancer le robot
 void MyRobot::avancer(){
     DataToSend[2] = 100;
@@ -136,10 +109,8 @@ void MyRobot::avancer(){
     DataToSend[4] = 100;
     DataToSend[5] = 0;
     DataToSend[6] = 80;
-    qDebug() << "avancer ";
 
     crctosend();
-    //crctosend();
 
 }
 
@@ -150,7 +121,7 @@ void MyRobot::reculer(){
     DataToSend[4] = 100;
     DataToSend[5] = 0;
     DataToSend[6] = 0;
-    // crctosend();
+    crctosend();
 
 }
 
@@ -161,7 +132,7 @@ void MyRobot::allerDroite(){
     DataToSend[4] = 150;
     DataToSend[5] = 0;
     DataToSend[6] = 64;
-    // crctosend();
+    crctosend();
 }
 
 //Focntion faisant aller le robot à gauche
@@ -171,7 +142,7 @@ void MyRobot::allerGauche(){
     DataToSend[4] = 150;
     DataToSend[5] = 0;
     DataToSend[6] = 16;
-    //crctosend();
+    crctosend();
 }
 
 //Focntion faisant s'arrêter le robot
@@ -181,7 +152,12 @@ void MyRobot::stop(){
     DataToSend[4] = 0x00;
     DataToSend[5] = 0x00;
     DataToSend[6] = 80;
-    //crctosend();
+    crctosend();
+}
+float MyRobot::Batterie(){
+    unsigned char data = (DataReceived[2] >> 2);
+    float batterie = float(data);
+    return batterie;
 }
 QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
 
