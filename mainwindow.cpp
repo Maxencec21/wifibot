@@ -11,6 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&wifibot, SIGNAL(batteryUpdate(int)), this, SLOT(on_progressBar_valueChanged(int)));
     connect(&wifibot, SIGNAL(odoDUpdate(float)), this, SLOT(on_lcdNumber_overflow(float)));
     connect(&wifibot, SIGNAL(odoGUpdate(float)), this, SLOT(on_lcdNumber_2_overflow(float)));
+    connect(&wifibot, SIGNAL(IR_AVGUpdate(uchar)), this, SLOT(on_lcdNumber_3_overflow(uchar)));
+    connect(&wifibot, SIGNAL(IR_AVDUpdate(uchar)), this, SLOT(on_lcdNumber_4_overflow(uchar)));
+    connect(&wifibot, SIGNAL(IR_ARGUpdate(uchar)), this, SLOT(on_lcdNumber_5_overflow(uchar)));
+    connect(&wifibot, SIGNAL(IR_ARDUpdate(uchar)), this, SLOT(on_lcdNumber_6_overflow(uchar)));
+
+
 
 
     //connect(&wifibot, SIGNAL(readyRead(const QByteArray)), this, SLOT(updateUi(const QByteArray)));
@@ -20,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::updateUi(const QByteArray array)
 {
+    //On update l'ui en changeant la valeur de la progresse bar selon la batterie calculée
     ui->progressBar->setValue(array[2]);
 }
 
@@ -33,7 +40,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_boutton_avancer_pressed()
 {
     wifibot.avancer();
-
 }
 
 
@@ -63,7 +69,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_Z) {
         // Commande pour avancer
         wifibot.avancer();
-        qDebug() << "avancer";
     }
     else if (event->key() == Qt::Key_S)
         wifibot.reculer();
@@ -82,6 +87,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::on_boutton_avancer_released()
 {
+    //Si le bouton est relaché, le robot s'arrête
     wifibot.stop();
 }
 
@@ -104,6 +110,7 @@ void MainWindow::on_boutton_gauche_2_released()
 }
 
 void MainWindow::on_progressBar_valueChanged(int niveauBatterie){
+    //fonction pour récupérer la batterie
     if(niveauBatterie < 0){
         niveauBatterie += 255;
     }
@@ -113,6 +120,7 @@ void MainWindow::on_progressBar_valueChanged(int niveauBatterie){
 
 void MainWindow::on_boutton_connection_clicked()
 {
+    //connexion propre au robot
     wifibot.doConnect();
     wifibot.MyTimerSlot();
 }
@@ -120,6 +128,7 @@ void MainWindow::on_boutton_connection_clicked()
 
 void MainWindow::on_boutton_dconnection_clicked()
 {
+    //deco propre du robot
     wifibot.disConnect();
     wifibot.disconnected();
 }
@@ -136,5 +145,37 @@ void MainWindow::on_lcdNumber_overflow(float odometrieD)
 void MainWindow::on_lcdNumber_2_overflow(float odometrieG)
 {
     ui->lcdNumber_2->display(odometrieG);
+}
+
+
+int MainWindow::on_speed_bar_valueChanged(int vitesse)
+{
+    return vitesse;
+}
+
+
+
+void MainWindow::on_lcdNumber_3_overflow(uchar IR_AVG)
+{
+    ui->lcdNumber->display(int(IR_AVG));
+}
+
+
+void MainWindow::on_lcdNumber_4_overflow(uchar IR_AVD)
+{
+    ui->lcdNumber->display(int(IR_AVD));
+
+}
+
+
+void MainWindow::on_lcdNumber_5_overflow(uchar IR_ARG)
+{
+    ui->lcdNumber->display(int(IR_ARG));
+}
+
+
+void MainWindow::on_lcdNumber_6_overflow(uchar IR_ARD)
+{
+    ui->lcdNumber->display(int(IR_ARD));
 }
 

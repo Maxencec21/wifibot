@@ -34,6 +34,10 @@ signals:
     void batteryUpdate(int batteryLevel);
     void odoDUpdate(float odometrieD);
     void odoGUpdate(float odometrieG);
+    void IR_AVGUpdate(unsigned char IR_AVG);
+    void IR_AVDUpdate(unsigned char IR_AVD);
+    void IR_ARGUpdate(unsigned char IR_ARG);
+    void IR_ARDUpdate(unsigned char IR_ARD);
 
 
 public slots:

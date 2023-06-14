@@ -65,6 +65,16 @@ private slots:
 
     void on_lcdNumber_2_overflow(float odometrieG);
 
+    int on_speed_bar_valueChanged(int value);
+
+    void on_lcdNumber_3_overflow(uchar IR_AVG);
+
+    void on_lcdNumber_4_overflow(uchar IR_AVD);
+
+    void on_lcdNumber_5_overflow(uchar IR_ARG);
+
+    void on_lcdNumber_6_overflow(uchar IR_ARD);
+
 private:
     Ui::MainWindow *ui;
 };

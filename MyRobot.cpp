@@ -66,6 +66,16 @@ void MyRobot::readyRead() {
     emit odoDUpdate(odometrieD);
     emit odoGUpdate(odometrieG);
 
+    unsigned char IR_AVG = DataReceived[3];
+    unsigned char IR_AVD = DataReceived[11];
+    unsigned char IR_ARG = DataReceived[4];
+    unsigned char IR_ARD = DataReceived[12];
+
+    emit IR_AVGUpdate(IR_AVG);
+    emit IR_AVDUpdate(IR_AVD);
+    emit IR_ARGUpdate(IR_ARG);
+    emit IR_ARDUpdate(IR_ARD);
+
 }
 
 void MyRobot::MyTimerSlot() {
@@ -116,9 +126,9 @@ void MyRobot::crctosend()
 
 //Focntion faisant avancer le robot
 void MyRobot::avancer(){
-    DataToSend[2] = 100;
+    DataToSend[2] = 100;//vitesse de la roue gauche
     DataToSend[3] = 0;
-    DataToSend[4] = 100;
+    DataToSend[4] = 100;//vitesse de la roue droite
     DataToSend[5] = 0;
     DataToSend[6] = 80;
     crctosend();
@@ -141,7 +151,7 @@ void MyRobot::allerDroite(){
     DataToSend[3] = 0;
     DataToSend[4] = 150;
     DataToSend[5] = 0;
-    DataToSend[6] = 64;
+    DataToSend[6] = 64; // contrôle gauche/droite/avant/arrière
     crctosend();
 }
 
@@ -171,10 +181,10 @@ float MyRobot::Batterie(){
 }
 QWebEngineView* MyRobot::cameraStream(QString ip, QString port){
 
-    QUrl url = QUrl("http://" + ip + ":" + port + "/?action=stream");
+    QUrl url = QUrl("http://" + ip + ":" + port + "/?action=stream"); // récupération url caméra
     qDebug() << url;
-    QWebEngineView *view = new QWebEngineView();
-    view->load(url);
+    QWebEngineView *view = new QWebEngineView();  // Création d'un objet view de type QWebEngineView
+    view->load(url); // chargement de la caméra sur "view"
     return view;
 }
 

@@ -8,9 +8,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    MainWindow w; // Création d'une mainwindow
 
 
-    w.show();
+    w.show(); // affichage de la mainwindow créée
     return a.exec();
 }
